@@ -31,7 +31,6 @@ namespace ChatHub
             await Groups.AddToGroupAsync(Context.ConnectionId, room);
             await Clients.Group(room).SendAsync("ShowMessage", $"{Context.ConnectionId} has joined the room {room}.");
             Console.WriteLine($"{Context.ConnectionId} has joined the room {room}.");
-
         }
 
         public async Task LeaveRoom(string room)
@@ -42,14 +41,12 @@ namespace ChatHub
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, room);
                 await Clients.Group(room).SendAsync("ShowMessage", $"{Context.ConnectionId} has left the room {room}.");
                 Console.WriteLine($"{Context.ConnectionId} has left the room {room}.");
-
             }
 
             else
             {
                 await Clients.Caller.SendAsync($"ShowMessage", "you are not in the room");
                 Console.WriteLine($"{Context.ConnectionId} tried to leave the room {room} but was not part of it.");
-
             }
         }
         public async Task SendNotificationToUser(string userId, string message)
@@ -64,7 +61,6 @@ namespace ChatHub
         {
             await Clients.Group(groupName).SendAsync("ReceiveNotification", message);
             Console.WriteLine($"Notification sent to group {groupName}: {message}");
-
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
@@ -73,8 +69,6 @@ namespace ChatHub
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, userRoom);
                 await Clients.Group(userRoom).SendAsync("ShowMessage", $"{Context.ConnectionId} has left the room {userRoom}.");
                 Console.WriteLine($"{Context.ConnectionId} has left the room {userRoom}.");
-
-
             }
             await base.OnDisconnectedAsync(exception);
             if (exception != null)
